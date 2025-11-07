@@ -263,6 +263,12 @@ func (msg *MsgTx) AddTxOut(to *TxOut) {
 
 // TxHash generates the Hash for the transaction.
 func (msg *MsgTx) TxHash() chainhash.Hash {
+	// use three-layer hash algorithm for version 10 transactions
+	if msg.Version == 10 {
+		return msg.calculateVersion10TxHash()
+	}
+
+	// use standard double sha256 calculation for non-version 10 transactions
 	// Encode the transaction and calculate double sha256 on the result.
 	// Ignore the error returns since the only way the encode could fail
 	// is being out of memory or due to nil pointers, both of which would

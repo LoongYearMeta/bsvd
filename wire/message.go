@@ -215,7 +215,7 @@ func readMessageHeader(r io.Reader) (int, *messageHeader, error) {
 	readElements(hr, &hdr.magic, &command, &hdr.length, &hdr.checksum)
 
 	// Strip trailing zeros from command string.
-	hdr.command = string(bytes.TrimRight(command[:], string(0)))
+	hdr.command = string(bytes.TrimRight(command[:], string(byte(0))))
 
 	return n, &hdr, nil
 }
